@@ -1,2 +1,3 @@
 # Django_project
-hotel reservations
+An application for adding hotels and reservations to databases.
+Supports GET, POST, AND DELETE REQUESTS
