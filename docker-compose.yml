@@ -1,0 +1,36 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./hotel:/app/hotel
+      - ./pyproject.toml:/app/pyproject.toml
+      - ./poetry.lock:/app/poetry.lock
+    environment:
+      - DJANGO_SETTINGS_MODULE=hotel.settings
+      - DB_NAME=postgres
+      - DB_USER=django_admin
+      - DB_PASSWORD=guisfortis
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DEBUG=True
+    depends_on:
+      - db
+    command: >
+      sh -c "
+      sleep 3 &&
+      python manage.py migrate &&
+      python manage.py runserver 0.0.0.0:8000
+      "
+
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=django_admin
+      - POSTGRES_PASSWORD=guisfortis
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
